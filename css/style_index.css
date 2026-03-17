@@ -152,13 +152,14 @@ header.scrolled {
     flex-direction: row;
     align-items: center;
     list-style: none;
-    gap: 30px;
+    gap: 40px;
     padding: 0;
     margin: 0;
     flex-wrap: nowrap;
     width: 100%;
     justify-content: flex-start;
     height: 100%;
+    padding-left: 10%;
 }
 
 .header-nav>ul>li {
@@ -170,6 +171,11 @@ header.scrolled {
     display: flex;
     align-items: center;
 }
+
+.header-nav>ul>li:first-child {
+    margin-right: auto;
+}
+
 
 .header-nav>ul>li:first-child>a {
     padding: 0;
@@ -189,8 +195,8 @@ header.scrolled {
     text-decoration: none;
     color: var(--beige);
     text-transform: uppercase;
-    font-size: 0.9em;
-    padding: 8px 12px;
+    font-size: 1.1em;
+    padding: 10px 18px;
     display: inline-block;
     transition: color 0.3s ease;
     overflow: hidden;
