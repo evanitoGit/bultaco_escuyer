@@ -1,8 +1,8 @@
 <?php
-/*
+
 $host = getenv('MYSQLHOST') ?: 'mysql.railway.internal';
 $port = getenv('MYSQLPORT') ?: '3306';
-$db   = getenv('MYSQLDATABASE') ?: 'railway';
+$db = getenv('MYSQLDATABASE') ?: 'railway';
 $user = getenv('MYSQLUSER') ?: 'root';
 $pass = getenv('MYSQLPASSWORD') ?: 'xwiipZsXlxEyaOgZCKtPvQWESaYnEjRQ';
 
@@ -13,7 +13,8 @@ try {
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
-*/
+
+/*
 $host = 'localhost';
 $dbname = 'club_bultaco';
 $username = 'root';
@@ -24,4 +25,4 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
-}
+}*/
