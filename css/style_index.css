@@ -30,6 +30,9 @@ body {
     color: var(--white);
     background-image: url("../img/restau.png");
     background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero {
@@ -120,35 +123,28 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 12px 40px;
+    padding: 8px 40px;
     transition: transform 0.3s ease;
     z-index: 1000;
     border-bottom: 3px solid var(--sepia);
     gap: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 75px;
 }
 
 header.scrolled {
     transform: translateY(0);
 }
 
-header img {
-    scale: 0.45;
-}
-
-.logo-link img {
-    height: 50px;
-    width: auto;
-    transition: transform 0.3s ease;
-}
-
-.logo-link:hover img {
-    transform: scale(1.05);
-}
-
 .header-nav {
     display: flex;
     justify-content: center;
-    height: 50px;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    height: 100%;
 }
 
 .header-nav ul {
@@ -158,17 +154,34 @@ header img {
     list-style: none;
     gap: 30px;
     padding: 0;
-    margin-left: -2%;
-}
-
-.header-nav ul li:nth-child(2) {
-    margin-left: -9%;
+    margin: 0;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: flex-start;
+    height: 100%;
 }
 
 .header-nav>ul>li {
     list-style-type: none;
     white-space: nowrap;
     position: relative;
+    flex-shrink: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header-nav>ul>li:first-child>a {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.header-nav>ul>li:first-child>a img {
+    height: 40px;
+    width: auto;
+    scale: 0.8;
 }
 
 .header-nav>ul>li:not(:first-child)>a {
@@ -176,8 +189,8 @@ header img {
     text-decoration: none;
     color: var(--beige);
     text-transform: uppercase;
-    font-size: 1em;
-    padding: 10px 15px;
+    font-size: 0.9em;
+    padding: 8px 12px;
     display: inline-block;
     transition: color 0.3s ease;
     overflow: hidden;
@@ -217,9 +230,59 @@ header img {
     color: var(--sepia);
 }
 
-.header-nav>ul>li:first-child>a {
-    padding: 5px;
-    display: inline-block;
+/* Responsive pour grands écrans */
+@media (min-width: 1920px) and (max-height: 1080px) {
+    header {
+        padding: 8px 30px;
+        gap: 30px;
+    }
+
+    .header-nav ul {
+        gap: 25px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.85em;
+        padding: 8px 10px;
+    }
+}
+
+/* Très grands écrans ultra-larges */
+@media (min-width: 2560px) {
+    header {
+        padding: 8px 20px;
+        gap: 20px;
+    }
+
+    .header-nav ul {
+        gap: 20px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+}
+
+/* Écrans larges mais courts (ratio large 21:9) */
+@media (min-aspect-ratio: 21/9) {
+    header {
+        padding: 8px 20px;
+        gap: 15px;
+    }
+
+    .header-nav ul {
+        gap: 15px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.8em;
+        padding: 6px 8px;
+    }
+
+    .header-nav>ul>li:first-child>a img {
+        height: 35px;
+    }
 }
 
 .dropdown {
@@ -304,7 +367,7 @@ h1 {
     font-family: Arial, sans-serif;
 }
 
-img {
+ul>li>img {
     scale: 0.8;
 }
 
