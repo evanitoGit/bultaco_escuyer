@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Notes Style Nbr Brand';
+    src: url('NotesStyleNbr-Brand.eot');
+    src: local('Notes Style Nbr Brand'), local('NotesStyleNbr-Brand'),
+        url('NotesStyleNbr-Brand.eot?#iefix') format('embedded-opentype'),
+        url('NotesStyleNbr-Brand.woff2') format('woff2'),
+        url('NotesStyleNbr-Brand.woff') format('woff'),
+        url('NotesStyleNbr-Brand.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
