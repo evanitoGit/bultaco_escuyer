@@ -117,13 +117,13 @@ body {
 header {
     display: flex;
     background-color: var(--carbone);
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 8px 60px;
+    padding: 8px 40px;
     transition: transform 0.3s ease;
     z-index: 1000;
     border-bottom: 3px solid var(--sepia);
@@ -138,9 +138,9 @@ header.scrolled {
 
 .header-nav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex: 1;
+    width: 100%;
     max-width: 100%;
     overflow: hidden;
     height: 100%;
@@ -152,11 +152,11 @@ header.scrolled {
     flex-direction: row;
     align-items: center;
     list-style: none;
-    gap: 40px;
+    gap: 35px;
     padding: 0;
     margin: 0;
     flex-wrap: nowrap;
-    justify-content: center;
+    width: 100%;
     height: 100%;
 }
 
@@ -164,15 +164,15 @@ header.scrolled {
     list-style-type: none;
     white-space: nowrap;
     position: relative;
-    flex-shrink: 1;
+    flex-shrink: 0;
     height: 100%;
     display: flex;
     align-items: center;
 }
 
+
 .header-nav>ul>li:first-child {
-    position: absolute;
-    left: 40px;
+    margin-right: auto;
 }
 
 
@@ -196,7 +196,7 @@ header.scrolled {
     color: var(--beige);
     text-transform: uppercase;
     font-size: 1em;
-    padding: 10px 18px;
+    padding: 10px 15px;
     display: inline-block;
     transition: color 0.3s ease;
     overflow: hidden;
