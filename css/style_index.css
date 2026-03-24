@@ -152,7 +152,7 @@ header.scrolled {
     flex-direction: row;
     align-items: center;
     list-style: none;
-    gap: 35px;
+    gap: 50px;
     padding: 0;
     margin: 0;
     flex-wrap: nowrap;
@@ -164,7 +164,7 @@ header.scrolled {
     list-style-type: none;
     white-space: nowrap;
     position: relative;
-    flex-shrink: 0;
+    flex-shrink: 1;
     height: 100%;
     display: flex;
     align-items: center;
@@ -237,10 +237,20 @@ header.scrolled {
 }
 
 /* Responsive pour grands écrans */
-@media (min-width: 1920px) and (max-height: 1080px) {
+@media (max-width: 1600px) {
+    .header-nav ul {
+        gap: 35px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.95em;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 1440px) {
     header {
         padding: 8px 30px;
-        gap: 30px;
     }
 
     .header-nav ul {
@@ -248,31 +258,14 @@ header.scrolled {
     }
 
     .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.9em;
         padding: 8px 10px;
     }
 }
 
-/* Très grands écrans ultra-larges */
-@media (min-width: 2560px) {
+@media (max-width: 1200px) {
     header {
         padding: 8px 20px;
-        gap: 20px;
-    }
-
-    .header-nav ul {
-        gap: 20px;
-    }
-
-    .header-nav>ul>li:not(:first-child)>a {
-        padding: 6px 10px;
-    }
-}
-
-/* Écrans larges mais courts (ratio large 21:9) */
-@media (min-aspect-ratio: 21/9) {
-    header {
-        padding: 8px 20px;
-        gap: 15px;
     }
 
     .header-nav ul {
@@ -280,11 +273,36 @@ header.scrolled {
     }
 
     .header-nav>ul>li:not(:first-child)>a {
+        font-size: 0.85em;
         padding: 6px 8px;
     }
 
     .header-nav>ul>li:first-child>a img {
         height: 35px;
+    }
+}
+
+/* Grands écrans - plus d'espacement */
+@media (min-width: 1920px) {
+    .header-nav ul {
+        gap: 60px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 1.05em;
+        padding: 10px 18px;
+    }
+}
+
+/* Très grands écrans */
+@media (min-width: 2560px) {
+    .header-nav ul {
+        gap: 80px;
+    }
+
+    .header-nav>ul>li:not(:first-child)>a {
+        font-size: 1.1em;
+        padding: 12px 20px;
     }
 }
 
