@@ -51,7 +51,7 @@ header {
     border-bottom: 3px solid var(--sepia);
     box-sizing: border-box;
     overflow: hidden;
-    height: 80px;
+    height: 70px;
 }
 
 header.scrolled {
@@ -95,6 +95,7 @@ header.scrolled {
 
 .header-nav>ul>li:first-child {
     margin-right: auto;
+    scale: 0.95;
 }
 
 
