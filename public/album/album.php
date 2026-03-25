@@ -31,7 +31,7 @@ $modeles = $stmtModeles->fetchAll(PDO::FETCH_ASSOC);
     <header class="nav">
         <nav class="header-nav">
             <ul>
-                <li><a href=""><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
+                <li><a href="../accueil/index.php"><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
                 <li><a href="../restauration/restauration.php">Restaurations</a></li>
                 <li><a href="../pieces/pieces.php">Pièces détachées</a></li>
                 <li><a href="#">Album photos</a></li>
