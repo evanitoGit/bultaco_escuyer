@@ -96,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifier_photo'])) {
     $message = "Nom du modèle modifié avec succès !";
 }
 
-// Récupérer toutes les photos
 $stmtGauche = $pdo->prepare("SELECT * FROM restauration_photos WHERE colonne = 'gauche' ORDER BY ordre ASC");
 $stmtGauche->execute();
 $photosGauche = $stmtGauche->fetchAll(PDO::FETCH_ASSOC);
