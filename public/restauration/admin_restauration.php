@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_photo'])) {
             $error = "Type de fichier non autorisé ou fichier trop volumineux (max 5 Mo).";
         }
     } else {
-        $error = "Aucun fichier sélectionné ou erreur d'upload.";
+        $error = "Aucun fichier sélectionné / erreur d'upload.";
     }
 }
 
