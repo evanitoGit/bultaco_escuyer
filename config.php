@@ -1,33 +1,28 @@
 <?php
-// On vérifie si on est sur Railway en cherchant une variable d'environnement spécifique
-$isRailway = getenv('MYSQLHOST') !== false;
 
-if ($isRailway) {
-    // --- Configuration RAILWAY (En ligne) ---
-    $host = getenv('mysql.railway.internal');
-    $dbname = getenv('railway');
-    $user = getenv('root');
-    $pass = getenv('xwiipZsXlxEyaOgZCKtPvQWESaYnEjRQ');
-    $port = getenv('3306');
-} else {
-    // --- Configuration LOCALHOST (Ton PC) ---
-    $host = 'localhost';
-    $dbname = 'club_bultaco';
-    $user = 'root';
-    $pass = ''; // Souvent vide sur XAMPP/WAMP
-    $port = '3306';
-}
+$host = getenv('MYSQLHOST') ?: 'mysql.railway.internal';
+$port = getenv('MYSQLPORT') ?: '3306';
+$db = getenv('MYSQLDATABASE') ?: 'railway';
+$user = getenv('MYSQLUSER') ?: 'root';
+$pass = getenv('MYSQLPASSWORD') ?: 'xwiipZsXlxEyaOgZCKtPvQWESaYnEjRQ';
 
 try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;port=$port;charset=utf8mb4",
-        $user,
-        $pass,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]
-    );
+    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erreur de connexion : " . $e->getMessage());
 }
+
+/*
+$host = 'localhost';
+$dbname = 'club_bultaco';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}*/
