@@ -401,6 +401,7 @@ h2 {
     font-size: 1.6em;
     margin-bottom: 25px;
     letter-spacing: 0.08em;
+    -webkit-text-stroke: 0;
 }
 
 .coord-bloc p {
