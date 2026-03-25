@@ -14,9 +14,9 @@
         <li><a href="../restauration/admin_restauration.php">Restauration</a></li>
         <li><a href="../pieces/admin_pieces.php">Pièces détachées</a></li>
         <li><a href="../album/admin_album.php">Album photos</a></li>
-        <li><a href="../logos/logos.php">Logos</a></li>
-        <li><a href="../pilotes/pilotes.php">Pilotes de légende</a></li>
-        <li><a href="../press/pressbook.php">Pressbook</a></li>
+        <li><a href="../logos/logos_admin.php">Logos</a></li>
+        <li><a href="../pilotes/pilotes_admin.php">Pilotes de légende</a></li>
+        <li><a href="../press/pressbook_admin.php">Pressbook</a></li>
     </ul>
     <div class="foot">
         <a href="../../public/accueil/index.php"><button>Se déconnecter</button></a>

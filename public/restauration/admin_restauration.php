@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_photo'])) {
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-        $maxSize = 5 * 1024 * 1024; // 5 Mo
+        $maxSize = 5 * 1024 * 1024;
 
         if (in_array($_FILES['image']['type'], $allowedTypes) && $_FILES['image']['size'] <= $maxSize) {
             $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
@@ -107,142 +107,163 @@ $photosDroite = $stmtDroite->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Restauration - Club Bultaco</title>
     <link rel="stylesheet" href="../../css/style_admin.css">
 </head>
+
 <body>
-<div class="admin-container">
-    <h1 class="admin-title">📝 Administration - Restauration</h1>
+    <div class="admin-container">
+        <h1 class="admin-title">Modification des restaurations</h1>
 
-    <?php if ($message): ?>
-        <div class="message">✅ <?php echo $message; ?></div>
-    <?php endif; ?>
+        <?php if ($message): ?>
+            <div class="message">Succès<?php echo $message; ?></div>
+        <?php endif; ?>
 
-    <?php if ($error): ?>
-        <div class="error">❌ <?php echo $error; ?></div>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="error">Échec<?php echo $error; ?></div>
+        <?php endif; ?>
 
-    <div class="admin-section">
-        <h2 class="section-title">Modifier le texte de présentation</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="contenu" class="form-label">Texte de présentation :</label>
-                <textarea name="contenu" id="contenu" required><?php echo htmlspecialchars($texte['contenu']); ?></textarea>
-            </div>
-            <button type="submit" name="update_texte" class="btn">Mettre à jour le texte</button>
-        </form>
-    </div>
+        <div class="admin-section">
+            <h2 class="section-title">Modifier le texte de présentation</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="contenu" class="form-label">Texte de présentation :</label>
+                    <textarea name="contenu" id="contenu"
+                        required><?php echo htmlspecialchars($texte['contenu']); ?></textarea>
+                </div>
+                <button type="submit" name="update_texte" class="btn">Mettre à jour le texte</button>
+            </form>
+        </div>
 
-    <div class="admin-section">
-        <h2 class="section-title">Ajouter une nouvelle photo</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="nom_modele" class="form-label">Nom du modèle :</label>
-                <input type="text" name="nom_modele" id="nom_modele" required placeholder="Ex: Bultaco Sherpa T">
-            </div>
+        <div class="admin-section">
+            <h2 class="section-title">Ajouter une nouvelle photo</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nom_modele" class="form-label">Nom du modèle :</label>
+                    <input type="text" name="nom_modele" id="nom_modele" required placeholder="Ex: Bultaco Sherpa T">
+                </div>
 
-            <div class="form-group">
-                <label for="colonne" class="form-label">Colonne :</label>
-                <select name="colonne" id="colonne" required>
-                    <option value="gauche">Avant</option>
-                    <option value="droite">Après</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="colonne" class="form-label">Colonne :</label>
+                    <select name="colonne" id="colonne" required>
+                        <option value="gauche">Avant</option>
+                        <option value="droite">Après</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="image" class="form-label">Image (JPG, PNG, GIF - Max 5 Mo) :</label>
-                <input type="file" name="image" id="image" accept="image/*" required>
-            </div>
+                <div class="form-group">
+                    <label for="image" class="form-label">Image (JPG, PNG, GIF - Max 5 Mo) :</label>
+                    <input type="file" name="image" id="image" accept="image/*" required>
+                </div>
 
-            <button type="submit" name="ajouter_photo" class="btn">Ajouter la photo</button>
-        </form>
-    </div>
+                <button type="submit" name="ajouter_photo" class="btn">Ajouter la photo</button>
+            </form>
+        </div>
 
-    <div class="admin-section">
-        <h2 class="section-title">Gérer les photos existantes</h2>
-        <div class="photos-admin-container">
-            <div class="colonne-admin">
-                <h3>Colonne Avant</h3>
-                <?php foreach ($photosGauche as $photo): ?>
-                    <div class="photo-admin-item">
-                        <img src="<?php echo htmlspecialchars($photo['image_path']); ?>" alt="<?php echo htmlspecialchars($photo['nom_modele']); ?>">
-                        <p><strong><?php echo htmlspecialchars($photo['nom_modele']); ?></strong></p>
+        <div class="admin-section">
+            <h2 class="section-title">Gérer les photos existantes</h2>
+            <div class="photos-admin-container">
+                <div class="colonne-admin">
+                    <h3>Colonne Avant</h3>
+                    <?php foreach ($photosGauche as $photo): ?>
+                        <div class="photo-admin-item">
+                            <img src="<?php echo htmlspecialchars($photo['image_path']); ?>"
+                                alt="<?php echo htmlspecialchars($photo['nom_modele']); ?>">
+                            <p><strong><?php echo htmlspecialchars($photo['nom_modele']); ?></strong></p>
 
-                        <div class="photo-admin-actions">
-                            <button onclick="toggleEdit(<?php echo $photo['id']; ?>)" class="btn">Modifier</button>
-                            <form method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');">
-                                <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
-                                <button type="submit" name="supprimer_photo" class="btn btn-danger">Supprimer</button>
-                            </form>
+                            <div class="photo-admin-actions">
+                                <button onclick="toggleEdit(<?php echo $photo['id']; ?>)" class="btn">Modifier</button>
+                                <form method="POST" style="display: inline;"
+                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');">
+                                    <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
+                                    <button type="submit" name="supprimer_photo" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+
+                            <div class="edit-form" id="edit-<?php echo $photo['id']; ?>">
+                                <form method="POST">
+                                    <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
+                                    <div class="form-group">
+                                        <label class="form-label">Nouveau nom :</label>
+                                        <input type="text" name="nouveau_nom"
+                                            value="<?php echo htmlspecialchars($photo['nom_modele']); ?>" required>
+                                    </div>
+                                    <button type="submit" name="modifier_photo" class="btn">Enregistrer</button>
+                                </form>
+                            </div>
                         </div>
+                    <?php endforeach; ?>
+                    <?php if (empty($photosGauche)): ?>
+                        <p style="text-align: center; color: #999;">Aucune photo dans cette colonne</p>
+                    <?php endif; ?>
+                </div>
 
-                        <div class="edit-form" id="edit-<?php echo $photo['id']; ?>">
-                            <form method="POST">
-                                <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
-                                <div class="form-group">
-                                    <label class="form-label">Nouveau nom :</label>
-                                    <input type="text" name="nouveau_nom" value="<?php echo htmlspecialchars($photo['nom_modele']); ?>" required>
-                                </div>
-                                <button type="submit" name="modifier_photo" class="btn">Enregistrer</button>
-                            </form>
+                <div class="colonne-admin">
+                    <h3>Colonne Après</h3>
+                    <?php foreach ($photosDroite as $photo): ?>
+                        <div class="photo-admin-item">
+                            <img src="<?php echo htmlspecialchars($photo['image_path']); ?>"
+                                alt="<?php echo htmlspecialchars($photo['nom_modele']); ?>">
+                            <p><strong><?php echo htmlspecialchars($photo['nom_modele']); ?></strong></p>
+
+                            <div class="photo-admin-actions">
+                                <button onclick="toggleEdit(<?php echo $photo['id']; ?>)" class="btn">Modifier</button>
+                                <form method="POST" style="display: inline;"
+                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');">
+                                    <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
+                                    <button type="submit" name="supprimer_photo" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+
+                            <div class="edit-form" id="edit-<?php echo $photo['id']; ?>">
+                                <form method="POST">
+                                    <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
+                                    <div class="form-group">
+                                        <label class="form-label">Nouveau nom :</label>
+                                        <input type="text" name="nouveau_nom"
+                                            value="<?php echo htmlspecialchars($photo['nom_modele']); ?>" required>
+                                    </div>
+                                    <button type="submit" name="modifier_photo" class="btn">Enregistrer</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-                <?php if (empty($photosGauche)): ?>
-                    <p style="text-align: center; color: #999;">Aucune photo dans cette colonne</p>
-                <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if (empty($photosDroite)): ?>
+                        <p style="text-align: center; color: #999;">Aucune photo dans cette colonne</p>
+                    <?php endif; ?>
+                </div>
             </div>
-
-            <div class="colonne-admin">
-                <h3>Colonne Après</h3>
-                <?php foreach ($photosDroite as $photo): ?>
-                    <div class="photo-admin-item">
-                        <img src="<?php echo htmlspecialchars($photo['image_path']); ?>" alt="<?php echo htmlspecialchars($photo['nom_modele']); ?>">
-                        <p><strong><?php echo htmlspecialchars($photo['nom_modele']); ?></strong></p>
-
-                        <div class="photo-admin-actions">
-                            <button onclick="toggleEdit(<?php echo $photo['id']; ?>)" class="btn">Modifier</button>
-                            <form method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');">
-                                <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
-                                <button type="submit" name="supprimer_photo" class="btn btn-danger">Supprimer</button>
-                            </form>
-                        </div>
-
-                        <div class="edit-form" id="edit-<?php echo $photo['id']; ?>">
-                            <form method="POST">
-                                <input type="hidden" name="photo_id" value="<?php echo $photo['id']; ?>">
-                                <div class="form-group">
-                                    <label class="form-label">Nouveau nom :</label>
-                                    <input type="text" name="nouveau_nom" value="<?php echo htmlspecialchars($photo['nom_modele']); ?>" required>
-                                </div>
-                                <button type="submit" name="modifier_photo" class="btn">Enregistrer</button>
-                            </form>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                <?php if (empty($photosDroite)): ?>
-                    <p style="text-align: center; color: #999;">Aucune photo dans cette colonne</p>
-                <?php endif; ?>
-            </div>
+        </div>
+        <div class="links">
+            <p>Autres pages à modifier</p>
+            <ul>
+                <li><a href="../accueil/index_admin.php">Accueil</a></li>
+                <li><a href="#">Restauration</a></li>
+                <li><a href="../pieces/admin_pieces.php">Pièces détachées</a></li>
+                <li><a href="../album/admin_album.php">Album photos</a></li>
+                <li><a href="../logos/logos_admin.php">Logos</a></li>
+                <li><a href="../pilotes/pilotes_admin.php">Pilotes de légende</a></li>
+                <li><a href="../press/pressbook_admin.php">Pressbook</a></li>
+            </ul>
+        </div>
+        <div class="admin-links">
+            <a href="../../logout.php" class="admin-link">Déconnexion</a>
         </div>
     </div>
 
-    <div class="admin-links">
-        <a href="../../logout.php" class="admin-link">Déconnexion</a>
-    </div>
-</div>
-
-<script>
-    function toggleEdit(photoId) {
-        const editForm = document.getElementById('edit-' + photoId);
-        if (editForm.style.display === 'none' || editForm.style.display === '') {
-            editForm.style.display = 'block';
-        } else {
-            editForm.style.display = 'none';
+    <script>
+        function toggleEdit(photoId) {
+            const editForm = document.getElementById('edit-' + photoId);
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block';
+            } else {
+                editForm.style.display = 'none';
+            }
         }
-    }
-</script>
+    </script>
 </body>
+
 </html>

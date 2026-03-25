@@ -10,26 +10,34 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 $message = '';
 $error = '';
 
-$stmt = $pdo->prepare("SELECT contenu FROM textes WHERE section = 'pressbook'");
+$stmt = $pdo->prepare("SELECT contenu FROM textes WHERE section = 'logos'");
 $stmt->execute();
 $texte = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$texte) {
+    $stmt = $pdo->prepare("INSERT INTO textes (section, contenu) VALUES ('logos', 'Découvrez l''évolution des logos Bultaco à travers les décennies.')");
+    $stmt->execute();
+
+    $stmt = $pdo->prepare("SELECT contenu FROM textes WHERE section = 'logos'");
+    $stmt->execute();
+    $texte = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_texte'])) {
     $nouveauTexte = $_POST['contenu'];
 
-    $stmt = $pdo->prepare("UPDATE textes SET contenu = :contenu WHERE section = 'pressbook'");
+    $stmt = $pdo->prepare("UPDATE textes SET contenu = :contenu WHERE section = 'logos'");
     $stmt->execute(['contenu' => $nouveauTexte]);
 
     $message = "Texte mis à jour avec succès !";
 
-    $stmt = $pdo->prepare("SELECT contenu FROM textes WHERE section = 'pressbook'");
+    $stmt = $pdo->prepare("SELECT contenu FROM textes WHERE section = 'logos'");
     $stmt->execute();
     $texte = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_item'])) {
     $titre = $_POST['titre'];
-    $typeContenu = $_POST['type_contenu'];
     $datePublication = $_POST['date_publication'];
     $source = $_POST['source'];
     $description = $_POST['description'];
@@ -37,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_item'])) {
 
     $imagePath = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml'];
         $maxSize = 5 * 1024 * 1024;
 
         if (in_array($_FILES['image']['type'], $allowedTypes) && $_FILES['image']['size'] <= $maxSize) {
-            $uploadDir = 'uploads/';
+            $uploadDir = 'uploads/logos/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -61,10 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_item'])) {
     }
 
     if (!$error) {
-        $stmt = $pdo->prepare("INSERT INTO pressbook (titre, type_contenu, date_publication, source, description, image_path, lien_externe) VALUES (:titre, :type, :date_pub, :source, :desc, :img, :lien)");
+        $stmt = $pdo->prepare("INSERT INTO pressbook (titre, type_contenu, date_publication, source, description, image_path, lien_externe) VALUES (:titre, 'logo', :date_pub, :source, :desc, :img, :lien)");
         $stmt->execute([
             'titre' => $titre,
-            'type' => $typeContenu,
             'date_pub' => $datePublication,
             'source' => $source,
             'desc' => $description,
@@ -72,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_item'])) {
             'lien' => $lienExterne
         ]);
 
-        $message = "Élément ajouté avec succès !";
+        $message = "Logo ajouté avec succès !";
     }
 }
 
@@ -90,22 +97,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_item'])) {
     $stmt = $pdo->prepare("DELETE FROM pressbook WHERE id = :id");
     $stmt->execute(['id' => $itemId]);
 
-    $message = "Élément supprimé avec succès !";
+    $message = "Logo supprimé avec succès !";
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifier_item'])) {
     $itemId = $_POST['item_id'];
     $titre = $_POST['nouveau_titre'];
-    $typeContenu = $_POST['nouveau_type'];
     $datePublication = $_POST['nouvelle_date'];
     $source = $_POST['nouvelle_source'];
     $description = $_POST['nouvelle_description'];
     $lienExterne = $_POST['nouveau_lien'];
 
-    $stmt = $pdo->prepare("UPDATE pressbook SET titre = :titre, type_contenu = :type, date_publication = :date_pub, source = :source, description = :desc, lien_externe = :lien WHERE id = :id");
+    $stmt = $pdo->prepare("UPDATE pressbook SET titre = :titre, date_publication = :date_pub, source = :source, description = :desc, lien_externe = :lien WHERE id = :id");
     $stmt->execute([
         'titre' => $titre,
-        'type' => $typeContenu,
         'date_pub' => $datePublication,
         'source' => $source,
         'desc' => $description,
@@ -113,44 +118,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifier_item'])) {
         'id' => $itemId
     ]);
 
-    $message = "Élément modifié avec succès !";
+    $message = "Logo modifié avec succès !";
 }
 
-$stmtArticles = $pdo->prepare("SELECT * FROM pressbook WHERE type_contenu = 'article' ORDER BY date_publication DESC");
-$stmtArticles->execute();
-$articles = $stmtArticles->fetchAll(PDO::FETCH_ASSOC);
-
-$stmtMagazines = $pdo->prepare("SELECT * FROM pressbook WHERE type_contenu = 'magazine' ORDER BY date_publication DESC");
-$stmtMagazines->execute();
-$magazines = $stmtMagazines->fetchAll(PDO::FETCH_ASSOC);
-
-$stmtPhotos = $pdo->prepare("SELECT * FROM pressbook WHERE type_contenu = 'photo' ORDER BY date_publication DESC");
-$stmtPhotos->execute();
-$photos = $stmtPhotos->fetchAll(PDO::FETCH_ASSOC);
-
-$stmtIllustrations = $pdo->prepare("SELECT * FROM pressbook WHERE type_contenu = 'illustration' ORDER BY date_publication DESC");
-$stmtIllustrations->execute();
-$illustrations = $stmtIllustrations->fetchAll(PDO::FETCH_ASSOC);
+$stmtLogos = $pdo->prepare("SELECT * FROM pressbook WHERE type_contenu = 'logo' ORDER BY date_publication DESC");
+$stmtLogos->execute();
+$logos = $stmtLogos->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Pressbook - Club Bultaco</title>
+    <title>Admin Logos - Club Bultaco</title>
     <link rel="stylesheet" href="../../css/style_admin.css">
 </head>
 
 <body>
     <div class="admin-container">
-        <h1 class="admin-title">Modification du pressbook</h1>
+        <h1 class="admin-title">Modification des logos</h1>
 
         <?php if ($message): ?>
-            <div class="message">Succès<?php echo $message; ?></div>
+            <div class="message">Succès
+                <?php echo $message; ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($error): ?>
-            <div class="error">Échec<?php echo $error; ?></div>
+            <div class="error">Échec
+                <?php echo $error; ?>
+            </div>
         <?php endif; ?>
 
         <div class="admin-section">
@@ -166,39 +163,28 @@ $illustrations = $stmtIllustrations->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="admin-section">
-            <h2 class="section-title">Ajouter un élément au pressbook</h2>
+            <h2 class="section-title">Ajouter un logo</h2>
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="type_contenu" class="form-label">Type de contenu :</label>
-                    <select name="type_contenu" id="type_contenu" required>
-                        <option value="">-- Choisir un type --</option>
-                        <option value="article">Article de presse</option>
-                        <option value="magazine">Couverture de magazine</option>
-                        <option value="photo">Photographie</option>
-                        <option value="illustration">Illustration</option>
-                    </select>
+                    <label for="titre" class="form-label">Titre du logo :</label>
+                    <input type="text" name="titre" id="titre" required placeholder="Ex: Logo original 1958">
                 </div>
 
                 <div class="form-group">
-                    <label for="titre" class="form-label">Titre :</label>
-                    <input type="text" name="titre" id="titre" required placeholder="Ex: Champion du monde 1975">
-                </div>
-
-                <div class="form-group">
-                    <label for="date_publication" class="form-label">Date de publication :</label>
+                    <label for="date_publication" class="form-label">Période / Année :</label>
                     <input type="text" name="date_publication" id="date_publication"
-                        placeholder="Ex: 1975 ou Juin 1972">
+                        placeholder="Ex: 1958-1965 ou Années 60">
                 </div>
 
                 <div class="form-group">
-                    <label for="source" class="form-label">Source :</label>
-                    <input type="text" name="source" id="source" placeholder="Ex: Moto Revue">
+                    <label for="source" class="form-label">Source / Variante :</label>
+                    <input type="text" name="source" id="source" placeholder="Ex: Version officielle, Catalogue 1970">
                 </div>
 
                 <div class="form-group">
                     <label for="description" class="form-label">Description :</label>
                     <textarea name="description" id="description" style="min-height: 100px;"
-                        placeholder="Description de l'élément"></textarea>
+                        placeholder="Histoire et contexte du logo"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -207,61 +193,24 @@ $illustrations = $stmtIllustrations->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="form-group">
-                    <label for="image" class="form-label">Image (JPG, PNG, GIF - Max 5 Mo) :</label>
+                    <label for="image" class="form-label">Image du logo (JPG, PNG, SVG, GIF - Max 5 Mo) :</label>
                     <input type="file" name="image" id="image" accept="image/*" required>
                 </div>
 
-                <button type="submit" name="ajouter_item" class="btn">Ajouter l'élément</button>
+                <button type="submit" name="ajouter_item" class="btn">Ajouter le logo</button>
             </form>
         </div>
 
         <div class="admin-section">
-            <h2 class="section-title">Articles de presse (<?php echo count($articles); ?>)</h2>
-            <?php if (empty($articles)): ?>
-                <p class="no-items-admin">Aucun article</p>
+            <h2 class="section-title">Logos Bultaco (
+                <?php echo count($logos); ?>)
+            </h2>
+            <?php if (empty($logos)): ?>
+                <p class="no-items-admin">Aucun logo</p>
             <?php else: ?>
                 <div class="pressbook-admin-grid">
-                    <?php foreach ($articles as $item): ?>
-                        <?php include 'pressbook_item_template.php'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <div class="admin-section">
-            <h2 class="section-title">Magazines (<?php echo count($magazines); ?>)</h2>
-            <?php if (empty($magazines)): ?>
-                <p class="no-items-admin">Aucun magazine</p>
-            <?php else: ?>
-                <div class="pressbook-admin-grid">
-                    <?php foreach ($magazines as $item): ?>
-                        <?php include 'pressbook_item_template.php'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <div class="admin-section">
-            <h2 class="section-title">Photographies (<?php echo count($photos); ?>)</h2>
-            <?php if (empty($photos)): ?>
-                <p class="no-items-admin">Aucune photo</p>
-            <?php else: ?>
-                <div class="pressbook-admin-grid">
-                    <?php foreach ($photos as $item): ?>
-                        <?php include 'pressbook_item_template.php'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
-
-        <div class="admin-section">
-            <h2 class="section-title">Illustrations (<?php echo count($illustrations); ?>)</h2>
-            <?php if (empty($illustrations)): ?>
-                <p class="no-items-admin">Aucune illustration</p>
-            <?php else: ?>
-                <div class="pressbook-admin-grid">
-                    <?php foreach ($illustrations as $item): ?>
-                        <?php include 'pressbook_item_template.php'; ?>
+                    <?php foreach ($logos as $item): ?>
+                        <?php include '../press/pressbook_item_template.php'; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -273,9 +222,9 @@ $illustrations = $stmtIllustrations->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="../restauration/admin_restauration.php">Restauration</a></li>
                 <li><a href="../pieces/admin_pieces.php">Pièces détachées</a></li>
                 <li><a href="../album/admin_album.php">Album photos</a></li>
-                <li><a href="../logos/logos_admin.php">Logos</a></li>
+                <li><a href="#">Logos</a></li>
                 <li><a href="../pilotes/pilotes_admin.php">Pilotes de légende</a></li>
-                <li><a href="#">Pressbook</a></li>
+                <li><a href="../press/pressbook_admin.php">Pressbook</a></li>
             </ul>
         </div>
         <div class="admin-links">

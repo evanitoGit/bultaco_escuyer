@@ -34,7 +34,7 @@ $tousLesItems = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
     <header class="nav">
         <nav class="header-nav">
             <ul>
-                <li><a href=""><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
+                <li><a href="../accueil/index.php"><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
                 <li><a href="../restauration/restauration.php">Restaurations</a></li>
                 <li><a href="../pieces/pieces.php">Pièces détachées</a></li>
                 <li><a href="../album/album.php">Album photos</a></li>
@@ -52,11 +52,6 @@ $tousLesItems = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <section class="hero">
             <p><?php echo htmlspecialchars($texte['contenu']); ?></p>
-
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Rechercher..." autocomplete="off">
-                <div id="searchResults" class="search-results"></div>
-            </div>
         </section>
 
         <section class="pressbook-section">
@@ -73,17 +68,6 @@ $tousLesItems = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="<?php echo htmlspecialchars($item['image_path']); ?>"
                                     alt="<?php echo htmlspecialchars($item['titre']); ?>">
                             <?php else: ?>
-                                <div class="no-image-press">
-                                    <?php
-                                    $icons = [
-                                        'article' => '📰',
-                                        'magazine' => '📔',
-                                        'photo' => '📸',
-                                        'illustration' => '✏️'
-                                    ];
-                                    echo $icons[$item['type_contenu']];
-                                    ?>
-                                </div>
                             <?php endif; ?>
 
                             <div class="masonry-overlay">
@@ -109,7 +93,48 @@ $tousLesItems = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-body" id="itemModalContent"></div>
         </div>
     </div>
+    <section class="coordonnees">
+        <div class="coord-header">
+            <h2>CLUB BULTACO TRIAL CLASSIC</h2>
+            <div class="separator"></div>
+        </div>
 
+        <div class="coord-content">
+            <div class="coord-bloc adresse">
+                <h3>ADRESSE</h3>
+                <p>Pierre Escuyer</p>
+                <p>53 Rue Roger Salengro</p>
+                <p>51100 Reims</p>
+                <p>France</p>
+            </div>
+
+            <div class="coord-bloc contact">
+                <h3>CONTACT</h3>
+                <p>06 08 31 15 65</p>
+                <p>03 26 09 28 85</p>
+                <p>bultaco.trialclassic@orange.fr</p>
+            </div>
+
+            <div class="coord-bloc reseaux-bloc">
+                <h3>RÉSEAUX SOCIAUX</h3>
+                <div class="reseaux-links">
+                    <a href="https://www.instagram.com/bultaco_club_france/" class="reseau-item" target="_blank">
+                        <img src="../../img/sociale.png" alt="Instagram">
+                        <span>@bultaco_club_france</span>
+                    </a>
+                    <a href="https://www.facebook.com/BultacoAddict/?locale=fr_FR" class="reseau-item" target="_blank">
+                        <img src="../../img/facebook.png" alt="Facebook">
+                        <span>Club Bultaco Trial Classic</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="coord-footer">
+            <p>Passionnés de motos Bultaco depuis plus de 20 ans</p>
+        </div>
+        <a href="../../login.php"><img src="../../img/logo_rond.png" alt="logorond" class="logorond"></a>
+    </section>
     <script>
         const items = <?php echo json_encode($tousLesItems); ?>;
 
@@ -170,10 +195,10 @@ $tousLesItems = $stmtAll->fetchAll(PDO::FETCH_ASSOC);
             if (!item) return;
 
             const typeLabels = {
-                'article': '📰 Article de presse',
-                'magazine': '📔 Magazine',
-                'photo': '📸 Photographie',
-                'illustration': '✏️ Illustration'
+                'article': 'Article de presse',
+                'magazine': 'Magazine',
+                'photo': 'Photographie',
+                'illustration': 'Illustration'
             };
 
             const content = `

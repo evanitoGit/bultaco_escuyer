@@ -94,7 +94,48 @@ $modeles = $stmtModeles->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-body" id="modeleModalContent"></div>
         </div>
     </div>
+    <section class="coordonnees">
+        <div class="coord-header">
+            <h2>CLUB BULTACO TRIAL CLASSIC</h2>
+            <div class="separator"></div>
+        </div>
 
+        <div class="coord-content">
+            <div class="coord-bloc adresse">
+                <h3>ADRESSE</h3>
+                <p>Pierre Escuyer</p>
+                <p>53 Rue Roger Salengro</p>
+                <p>51100 Reims</p>
+                <p>France</p>
+            </div>
+
+            <div class="coord-bloc contact">
+                <h3>CONTACT</h3>
+                <p>06 08 31 15 65</p>
+                <p>03 26 09 28 85</p>
+                <p>bultaco.trialclassic@orange.fr</p>
+            </div>
+
+            <div class="coord-bloc reseaux-bloc">
+                <h3>RÉSEAUX SOCIAUX</h3>
+                <div class="reseaux-links">
+                    <a href="https://www.instagram.com/bultaco_club_france/" class="reseau-item" target="_blank">
+                        <img src="../../img/sociale.png" alt="Instagram">
+                        <span>@bultaco_club_france</span>
+                    </a>
+                    <a href="https://www.facebook.com/BultacoAddict/?locale=fr_FR" class="reseau-item" target="_blank">
+                        <img src="../../img/facebook.png" alt="Facebook">
+                        <span>Club Bultaco Trial Classic</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="coord-footer">
+            <p>Passionnés de motos Bultaco depuis plus de 20 ans</p>
+        </div>
+        <a href="../../login.php"><img src="../../img/logo_rond.png" alt="logorond" class="logorond"></a>
+    </section>
     <script>
         const modeles = <?php echo json_encode($modeles); ?>;
 

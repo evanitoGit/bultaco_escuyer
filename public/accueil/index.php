@@ -70,11 +70,11 @@ $texte = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="coord-bloc reseaux-bloc">
                 <h3>RÉSEAUX SOCIAUX</h3>
                 <div class="reseaux-links">
-                    <a href="https://www.instagram.com/bultaco_club_france/" class="reseau-item">
+                    <a href="https://www.instagram.com/bultaco_club_france/" class="reseau-item" target="_blank">
                         <img src="../../img/sociale.png" alt="Instagram">
                         <span>@bultaco_club_france</span>
                     </a>
-                    <a href="https://www.facebook.com/BultacoAddict/?locale=fr_FR" class="reseau-item">
+                    <a href="https://www.facebook.com/BultacoAddict/?locale=fr_FR" class="reseau-item" target="_blank">
                         <img src="../../img/facebook.png" alt="Facebook">
                         <span>Club Bultaco Trial Classic</span>
                     </a>

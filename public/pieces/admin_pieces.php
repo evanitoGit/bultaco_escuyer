@@ -159,205 +159,235 @@ $categories = $stmtCategories->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Pièces Détachées - Club Bultaco</title>
     <link rel="stylesheet" href="../../css/style_admin.css">
 </head>
+
 <body>
-<div class="admin-container">
-    <h1 class="admin-title">Administration - Pièces Détachées</h1>
+    <div class="admin-container">
+        <h1 class="admin-title">Modification des pièces Détachées</h1>
 
-    <?php if ($message): ?>
-        <div class="message">✅ <?php echo $message; ?></div>
-    <?php endif; ?>
+        <?php if ($message): ?>
+            <div class="message">Succès<?php echo $message; ?></div>
+        <?php endif; ?>
 
-    <?php if ($error): ?>
-        <div class="error">❌ <?php echo $error; ?></div>
-    <?php endif; ?>
+        <?php if ($error): ?>
+            <div class="error">Échec<?php echo $error; ?></div>
+        <?php endif; ?>
 
-    <div class="admin-section">
-        <h2 class="section-title">Modifier le texte de présentation</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="contenu" class="form-label">Texte de présentation :</label>
-                <textarea name="contenu" id="contenu" required><?php echo htmlspecialchars($texte['contenu']); ?></textarea>
-            </div>
-            <button type="submit" name="update_texte" class="btn">Mettre à jour le texte</button>
-        </form>
-    </div>
+        <div class="admin-section">
+            <h2 class="section-title">Modifier le texte de présentation</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="contenu" class="form-label">Texte de présentation :</label>
+                    <textarea name="contenu" id="contenu"
+                        required><?php echo htmlspecialchars($texte['contenu']); ?></textarea>
+                </div>
+                <button type="submit" name="update_texte" class="btn">Mettre à jour le texte</button>
+            </form>
+        </div>
 
-    <div class="admin-section">
-        <h2 class="section-title">📁 Ajouter une catégorie</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="nom_categorie" class="form-label">Nom de la catégorie :</label>
-                <input type="text" name="nom_categorie" id="nom_categorie" required placeholder="Ex: Moteur">
-            </div>
-            <button type="submit" name="ajouter_categorie" class="btn">Ajouter la catégorie</button>
-        </form>
-    </div>
+        <div class="admin-section">
+            <h2 class="section-title">Ajouter une catégorie</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="nom_categorie" class="form-label">Nom de la catégorie :</label>
+                    <input type="text" name="nom_categorie" id="nom_categorie" required placeholder="Ex: Moteur">
+                </div>
+                <button type="submit" name="ajouter_categorie" class="btn">Ajouter la catégorie</button>
+            </form>
+        </div>
 
-    <div class="admin-section">
-        <h2 class="section-title">Ajouter une sous-catégorie</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label for="categorie_id_sc" class="form-label">Catégorie parente :</label>
-                <select name="categorie_id" id="categorie_id_sc" required>
-                    <option value="">-- Choisir une catégorie --</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nom']); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="nom_sous_categorie" class="form-label">Nom de la sous-catégorie :</label>
-                <input type="text" name="nom_sous_categorie" id="nom_sous_categorie" required placeholder="Ex: Cylindre et piston">
-            </div>
-            <button type="submit" name="ajouter_sous_categorie" class="btn">Ajouter la sous-catégorie</button>
-        </form>
-    </div>
+        <div class="admin-section">
+            <h2 class="section-title">Ajouter une sous-catégorie</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="categorie_id_sc" class="form-label">Catégorie parente :</label>
+                    <select name="categorie_id" id="categorie_id_sc" required>
+                        <option value="">-- Choisir une catégorie --</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nom']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nom_sous_categorie" class="form-label">Nom de la sous-catégorie :</label>
+                    <input type="text" name="nom_sous_categorie" id="nom_sous_categorie" required
+                        placeholder="Ex: Cylindre et piston">
+                </div>
+                <button type="submit" name="ajouter_sous_categorie" class="btn">Ajouter la sous-catégorie</button>
+            </form>
+        </div>
 
-    <div class="admin-section">
-        <h2 class="section-title">Ajouter une pièce</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="categorie_id_piece" class="form-label">Catégorie :</label>
-                <select id="categorie_id_piece" required onchange="loadSousCategories(this.value)">
-                    <option value="">-- Choisir une catégorie --</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nom']); ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="sous_categorie_id" class="form-label">Sous-catégorie :</label>
-                <select name="sous_categorie_id" id="sous_categorie_id" required>
-                    <option value="">-- Choisir d'abord une catégorie --</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="nom_piece" class="form-label">Nom de la pièce :</label>
-                <input type="text" name="nom_piece" id="nom_piece" required placeholder="Ex: Piston 50mm Sherpa T">
-            </div>
-
-            <div class="form-group">
-                <label for="description" class="form-label">Description :</label>
-                <textarea name="description" id="description" style="min-height: 100px;" required placeholder="Description de la pièce"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="prix" class="form-label">Prix (€) :</label>
-                <input type="number" step="0.01" name="prix" id="prix" required placeholder="Ex: 89.90">
-            </div>
-
-            <div class="form-group">
-                <label for="image" class="form-label">Image (optionnel - JPG, PNG, GIF - Max 5 Mo) :</label>
-                <input type="file" name="image" id="image" accept="image/*">
-            </div>
-
-            <button type="submit" name="ajouter_piece" class="btn">Ajouter la pièce</button>
-        </form>
-    </div>
-
-    <div class="admin-section">
-        <h2 class="section-title">Gérer les catégories, sous-catégories et pièces</h2>
-
-        <?php foreach ($categories as $categorie): ?>
-            <?php
-            $stmtSousCategories = $pdo->prepare("SELECT * FROM sous_categories WHERE categorie_id = :cat_id ORDER BY ordre ASC");
-            $stmtSousCategories->execute(['cat_id' => $categorie['id']]);
-            $sousCategories = $stmtSousCategories->fetchAll(PDO::FETCH_ASSOC);
-            ?>
-
-            <div class="categorie-admin-block">
-                <div class="categorie-admin-header">
-                    <h3> <?php echo htmlspecialchars($categorie['nom']); ?></h3>
-                    <form method="POST" style="display: inline;" onsubmit="return confirm('Supprimer cette catégorie supprimera aussi toutes ses sous-catégories et pièces. Continuer ?');">
-                        <input type="hidden" name="categorie_id" value="<?php echo $categorie['id']; ?>">
-                        <button type="submit" name="supprimer_categorie" class="btn btn-danger">Supprimer catégorie</button>
-                    </form>
+        <div class="admin-section">
+            <h2 class="section-title">Ajouter une pièce</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="categorie_id_piece" class="form-label">Catégorie :</label>
+                    <select id="categorie_id_piece" required onchange="loadSousCategories(this.value)">
+                        <option value="">-- Choisir une catégorie --</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?php echo $cat['id']; ?>"><?php echo htmlspecialchars($cat['nom']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
-                <?php foreach ($sousCategories as $sousCategorie): ?>
-                    <?php
-                    $stmtPieces = $pdo->prepare("SELECT * FROM pieces_detachees WHERE sous_categorie_id = :sous_cat_id ORDER BY nom ASC");
-                    $stmtPieces->execute(['sous_cat_id' => $sousCategorie['id']]);
-                    $pieces = $stmtPieces->fetchAll(PDO::FETCH_ASSOC);
-                    ?>
+                <div class="form-group">
+                    <label for="sous_categorie_id" class="form-label">Sous-catégorie :</label>
+                    <select name="sous_categorie_id" id="sous_categorie_id" required>
+                        <option value="">-- Choisir d'abord une catégorie --</option>
+                    </select>
+                </div>
 
-                    <div class="sous-categorie-admin-block">
-                        <div class="sous-categorie-admin-header">
-                            <h4>📂 <?php echo htmlspecialchars($sousCategorie['nom']); ?> (<?php echo count($pieces); ?> pièces)</h4>
-                            <form method="POST" style="display: inline;" onsubmit="return confirm('Supprimer cette sous-catégorie supprimera aussi toutes ses pièces. Continuer ?');">
-                                <input type="hidden" name="sous_categorie_id" value="<?php echo $sousCategorie['id']; ?>">
-                                <button type="submit" name="supprimer_sous_categorie" class="btn btn-danger">🗑</button>
-                            </form>
-                        </div>
+                <div class="form-group">
+                    <label for="nom_piece" class="form-label">Nom de la pièce :</label>
+                    <input type="text" name="nom_piece" id="nom_piece" required placeholder="Ex: Piston 50mm Sherpa T">
+                </div>
 
-                        <?php if (!empty($pieces)): ?>
-                            <div class="pieces-admin-grid">
-                                <?php foreach ($pieces as $piece): ?>
-                                    <div class="piece-admin-card">
-                                        <?php if ($piece['image_path']): ?>
-                                            <img src="<?php echo htmlspecialchars($piece['image_path']); ?>" alt="<?php echo htmlspecialchars($piece['nom']); ?>">
-                                        <?php else: ?>
-                                            <div class="no-image-admin"></div>
-                                        <?php endif; ?>
+                <div class="form-group">
+                    <label for="description" class="form-label">Description :</label>
+                    <textarea name="description" id="description" style="min-height: 100px;" required
+                        placeholder="Description de la pièce"></textarea>
+                </div>
 
-                                        <div class="piece-admin-info">
-                                            <h5><?php echo htmlspecialchars($piece['nom']); ?></h5>
-                                            <p class="piece-admin-desc"><?php echo htmlspecialchars($piece['description']); ?></p>
-                                            <p class="piece-admin-prix"><?php echo number_format($piece['prix'], 2, ',', ' '); ?> €</p>
+                <div class="form-group">
+                    <label for="prix" class="form-label">Prix (€) :</label>
+                    <input type="number" step="0.01" name="prix" id="prix" required placeholder="Ex: 89.90">
+                </div>
 
-                                            <div class="piece-admin-actions">
-                                                <button onclick="toggleEditPiece(<?php echo $piece['id']; ?>)" class="btn">Modifier</button>
-                                                <form method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette pièce ?');">
-                                                    <input type="hidden" name="piece_id" value="<?php echo $piece['id']; ?>">
-                                                    <button type="submit" name="supprimer_piece" class="btn btn-danger">Supprimer</button>
-                                                </form>
-                                            </div>
+                <div class="form-group">
+                    <label for="image" class="form-label">Image (optionnel - JPG, PNG, GIF - Max 5 Mo) :</label>
+                    <input type="file" name="image" id="image" accept="image/*">
+                </div>
 
-                                            <div class="edit-form-piece" id="edit-piece-<?php echo $piece['id']; ?>" style="display: none;">
-                                                <form method="POST">
-                                                    <input type="hidden" name="piece_id" value="<?php echo $piece['id']; ?>">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Nom :</label>
-                                                        <input type="text" name="nouveau_nom" value="<?php echo htmlspecialchars($piece['nom']); ?>" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-label">Description :</label>
-                                                        <textarea name="nouvelle_description" required><?php echo htmlspecialchars($piece['description']); ?></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-label">Prix (€) :</label>
-                                                        <input type="number" step="0.01" name="nouveau_prix" value="<?php echo $piece['prix']; ?>" required>
-                                                    </div>
-                                                    <button type="submit" name="modifier_piece" class="btn">Enregistrer</button>
-                                                </form>
+                <button type="submit" name="ajouter_piece" class="btn">Ajouter la pièce</button>
+            </form>
+        </div>
+
+        <div class="admin-section">
+            <h2 class="section-title">Gérer les catégories, sous-catégories et pièces</h2>
+
+            <?php foreach ($categories as $categorie): ?>
+                <?php
+                $stmtSousCategories = $pdo->prepare("SELECT * FROM sous_categories WHERE categorie_id = :cat_id ORDER BY ordre ASC");
+                $stmtSousCategories->execute(['cat_id' => $categorie['id']]);
+                $sousCategories = $stmtSousCategories->fetchAll(PDO::FETCH_ASSOC);
+                ?>
+
+                <div class="categorie-admin-block">
+                    <div class="categorie-admin-header">
+                        <h3> <?php echo htmlspecialchars($categorie['nom']); ?></h3>
+                        <form method="POST" style="display: inline;"
+                            onsubmit="return confirm('Supprimer cette catégorie supprimera aussi toutes ses sous-catégories et pièces. Continuer ?');">
+                            <input type="hidden" name="categorie_id" value="<?php echo $categorie['id']; ?>">
+                            <button type="submit" name="supprimer_categorie" class="btn btn-danger">Supprimer
+                                catégorie</button>
+                        </form>
+                    </div>
+
+                    <?php foreach ($sousCategories as $sousCategorie): ?>
+                        <?php
+                        $stmtPieces = $pdo->prepare("SELECT * FROM pieces_detachees WHERE sous_categorie_id = :sous_cat_id ORDER BY nom ASC");
+                        $stmtPieces->execute(['sous_cat_id' => $sousCategorie['id']]);
+                        $pieces = $stmtPieces->fetchAll(PDO::FETCH_ASSOC);
+                        ?>
+
+                        <div class="sous-categorie-admin-block">
+                            <div class="sous-categorie-admin-header">
+                                <h4><?php echo htmlspecialchars($sousCategorie['nom']); ?> (<?php echo count($pieces); ?>
+                                    pièces)</h4>
+                                <form method="POST" style="display: inline;"
+                                    onsubmit="return confirm('Supprimer cette sous-catégorie supprimera aussi toutes ses pièces. Continuer ?');">
+                                    <input type="hidden" name="sous_categorie_id" value="<?php echo $sousCategorie['id']; ?>">
+                                    <button type="submit" name="supprimer_sous_categorie"
+                                        class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+
+                            <?php if (!empty($pieces)): ?>
+                                <div class="pieces-admin-grid">
+                                    <?php foreach ($pieces as $piece): ?>
+                                        <div class="piece-admin-card">
+                                            <?php if ($piece['image_path']): ?>
+                                                <img src="<?php echo htmlspecialchars($piece['image_path']); ?>"
+                                                    alt="<?php echo htmlspecialchars($piece['nom']); ?>">
+                                            <?php else: ?>
+                                                <div class="no-image-admin"></div>
+                                            <?php endif; ?>
+
+                                            <div class="piece-admin-info">
+                                                <h5><?php echo htmlspecialchars($piece['nom']); ?></h5>
+                                                <p class="piece-admin-desc"><?php echo htmlspecialchars($piece['description']); ?></p>
+                                                <p class="piece-admin-prix"><?php echo number_format($piece['prix'], 2, ',', ' '); ?> €
+                                                </p>
+
+                                                <div class="piece-admin-actions">
+                                                    <button onclick="toggleEditPiece(<?php echo $piece['id']; ?>)"
+                                                        class="btn">Modifier</button>
+                                                    <form method="POST" style="display: inline;"
+                                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette pièce ?');">
+                                                        <input type="hidden" name="piece_id" value="<?php echo $piece['id']; ?>">
+                                                        <button type="submit" name="supprimer_piece"
+                                                            class="btn btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+
+                                                <div class="edit-form-piece" id="edit-piece-<?php echo $piece['id']; ?>"
+                                                    style="display: none;">
+                                                    <form method="POST">
+                                                        <input type="hidden" name="piece_id" value="<?php echo $piece['id']; ?>">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Nom :</label>
+                                                            <input type="text" name="nouveau_nom"
+                                                                value="<?php echo htmlspecialchars($piece['nom']); ?>" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Description :</label>
+                                                            <textarea name="nouvelle_description"
+                                                                required><?php echo htmlspecialchars($piece['description']); ?></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Prix (€) :</label>
+                                                            <input type="number" step="0.01" name="nouveau_prix"
+                                                                value="<?php echo $piece['prix']; ?>" required>
+                                                        </div>
+                                                        <button type="submit" name="modifier_piece" class="btn">Enregistrer</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php else: ?>
-                            <p class="no-pieces-admin">Aucune pièce dans cette sous-catégorie</p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <p class="no-pieces-admin">Aucune pièce dans cette sous-catégorie</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="links">
+            <p>Autres pages à modifier</p>
+            <ul>
+                <li><a href="../accueil/index_admin.php">Accueil</a></li>
+                <li><a href="../restauration/admin_restauration.php">Restauration</a></li>
+                <li><a href="#">Pièces détachées</a></li>
+                <li><a href="../album/admin_album.php">Album photos</a></li>
+                <li><a href="../logos/logos_admin.php">Logos</a></li>
+                <li><a href="../pilotes/pilotes_admin.php">Pilotes de légende</a></li>
+                <li><a href="../press/pressbook_admin.php">Pressbook</a></li>
+            </ul>
+        </div>
+        <div class="admin-links">
+            <a href="../../logout.php" class="admin-link">Déconnexion</a>
+        </div>
     </div>
 
-    <div class="admin-links">
-        <a href="../../logout.php" class="admin-link">Déconnexion</a>
-    </div>
-</div>
-
-<script>
-    const categoriesData = <?php
+    <script>
+        const categoriesData = <?php
         $catData = [];
         foreach ($categories as $cat) {
             $stmtSC = $pdo->prepare("SELECT * FROM sous_categories WHERE categorie_id = :cat_id ORDER BY ordre ASC");
@@ -367,28 +397,29 @@ $categories = $stmtCategories->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($catData);
         ?>;
 
-    function loadSousCategories(categorieId) {
-        const sousCategorieSelect = document.getElementById('sous_categorie_id');
-        sousCategorieSelect.innerHTML = '<option value="">-- Choisir une sous-catégorie --</option>';
+        function loadSousCategories(categorieId) {
+            const sousCategorieSelect = document.getElementById('sous_categorie_id');
+            sousCategorieSelect.innerHTML = '<option value="">-- Choisir une sous-catégorie --</option>';
 
-        if (categorieId && categoriesData[categorieId]) {
-            categoriesData[categorieId].forEach(sc => {
-                const option = document.createElement('option');
-                option.value = sc.id;
-                option.textContent = sc.nom;
-                sousCategorieSelect.appendChild(option);
-            });
+            if (categorieId && categoriesData[categorieId]) {
+                categoriesData[categorieId].forEach(sc => {
+                    const option = document.createElement('option');
+                    option.value = sc.id;
+                    option.textContent = sc.nom;
+                    sousCategorieSelect.appendChild(option);
+                });
+            }
         }
-    }
 
-    function toggleEditPiece(pieceId) {
-        const editForm = document.getElementById('edit-piece-' + pieceId);
-        if (editForm.style.display === 'none' || editForm.style.display === '') {
-            editForm.style.display = 'block';
-        } else {
-            editForm.style.display = 'none';
+        function toggleEditPiece(pieceId) {
+            const editForm = document.getElementById('edit-piece-' + pieceId);
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block';
+            } else {
+                editForm.style.display = 'none';
+            }
         }
-    }
-</script>
+    </script>
 </body>
+
 </html>

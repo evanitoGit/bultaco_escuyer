@@ -31,7 +31,7 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
     <header class="nav">
         <nav class="header-nav">
             <ul>
-                <li><a href=""><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
+                <li><a href="../accueil/index.php"><img src="../../img/logo_bultaco.png" alt="logo"></a></li>
                 <li><a href="../restauration/restauration.php">Restaurations</a></li>
                 <li><a href="../pieces/pieces.php">Pièces détachées</a></li>
                 <li><a href="../album/album.php">Album photos</a></li>
@@ -50,7 +50,7 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
             <p><?php echo htmlspecialchars($texte['contenu']); ?></p>
 
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Rechercher un pilote..." autocomplete="off">
+                <input type="text" id="searchInput" placeholder="Rechercher un pilote" autocomplete="off">
                 <div id="searchResults" class="search-results"></div>
             </div>
         </section>
@@ -68,7 +68,7 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="album-photo"
                                     style="background-image: url('<?php echo htmlspecialchars($pilote['image_path']); ?>')"></div>
                             <?php else: ?>
-                                <div class="album-photo no-photo">👤</div>
+                                <div class="album-photo no-photo"></div>
                             <?php endif; ?>
                             <div class="album-info">
                                 <h3><?php echo htmlspecialchars($pilote['prenom'] . ' ' . $pilote['nom']); ?></h3>
@@ -94,7 +94,48 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-body" id="piloteModalContent"></div>
         </div>
     </div>
+    <section class="coordonnees">
+        <div class="coord-header">
+            <h2>CLUB BULTACO TRIAL CLASSIC</h2>
+            <div class="separator"></div>
+        </div>
 
+        <div class="coord-content">
+            <div class="coord-bloc adresse">
+                <h3>ADRESSE</h3>
+                <p>Pierre Escuyer</p>
+                <p>53 Rue Roger Salengro</p>
+                <p>51100 Reims</p>
+                <p>France</p>
+            </div>
+
+            <div class="coord-bloc contact">
+                <h3>CONTACT</h3>
+                <p>06 08 31 15 65</p>
+                <p>03 26 09 28 85</p>
+                <p>bultaco.trialclassic@orange.fr</p>
+            </div>
+
+            <div class="coord-bloc reseaux-bloc">
+                <h3>RÉSEAUX SOCIAUX</h3>
+                <div class="reseaux-links">
+                    <a href="https://www.instagram.com/bultaco_club_france/" class="reseau-item" target="_blank">
+                        <img src="../../img/sociale.png" alt="Instagram">
+                        <span>@bultaco_club_france</span>
+                    </a>
+                    <a href="https://www.facebook.com/BultacoAddict/?locale=fr_FR" class="reseau-item" target="_blank">
+                        <img src="../../img/facebook.png" alt="Facebook">
+                        <span>Club Bultaco Trial Classic</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="coord-footer">
+            <p>Passionnés de motos Bultaco depuis plus de 20 ans</p>
+        </div>
+        <a href="../../login.php"><img src="../../img/logo_rond.png" alt="logorond" class="logorond"></a>
+    </section>
     <script>
         const pilotes = <?php echo json_encode($pilotes); ?>;
 
@@ -168,11 +209,10 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
 
                     ${pilote.image_path ?
                     `<img src="${pilote.image_path}" alt="${pilote.prenom} ${pilote.nom}" class="carte-photo">` :
-                    '<div class="carte-photo-placeholder">👤</div>'
+                    '<div class="carte-photo-placeholder"></div>'
                 }
 
                     <div class="carte-section">
-                        <h3>📋 Informations</h3>
                         <div class="info-grid">
                             <div class="info-item">
                                 <span class="info-label">Naissance :</span>
@@ -193,14 +233,12 @@ $pilotes = $stmtPilotes->fetchAll(PDO::FETCH_ASSOC);
 
                     ${pilote.description ?
                     `<div class="carte-section">
-                            <h3>📝 Description</h3>
                             <p class="description-text">${pilote.description}</p>
                         </div>` : ''
                 }
 
                     ${pilote.palmares ?
                     `<div class="carte-section">
-                            <h3>🏆 Palmarès</h3>
                             <div class="palmares-text">${pilote.palmares.replace(/\n/g, '<br>')}</div>
                         </div>` : ''
                 }
