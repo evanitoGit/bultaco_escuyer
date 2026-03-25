@@ -1063,3 +1063,18 @@ h2 {
         text-align: center;
     }
 }
+
+/* On retire les effets de contour sur TOUT le footer */
+.coordonnees h2,
+.coordonnees h3 {
+    -webkit-text-stroke: 0 !important;
+    color: var(--beige) !important;
+    /* Pour le H2 principal */
+    letter-spacing: 0.05em !important;
+}
+
+/* On remet la couleur spécifique sepia pour les petits titres de blocs */
+.coordonnees .coord-bloc h3 {
+    color: var(--sepia) !important;
+    font-size: 1.6em;
+}
