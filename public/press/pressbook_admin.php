@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_item'])) {
         $maxSize = 5 * 1024 * 1024;
 
         if (in_array($_FILES['image']['type'], $allowedTypes) && $_FILES['image']['size'] <= $maxSize) {
-            $uploadDir = 'uploads/';
+            $uploadDir = '../uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }

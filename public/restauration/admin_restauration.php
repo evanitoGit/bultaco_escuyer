@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_photo'])) {
         if (in_array($_FILES['image']['type'], $allowedTypes) && $_FILES['image']['size'] <= $maxSize) {
             $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
             $newFileName = uniqid() . '.' . $extension;
-            $uploadPath = 'uploads/' . $newFileName;
+            $uploadPath = '../uploads/' . $newFileName;
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
                 $stmtOrdre = $pdo->prepare("SELECT MAX(ordre) as max_ordre FROM restauration_photos WHERE colonne = :colonne");
