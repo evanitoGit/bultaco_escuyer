@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_pilote'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_pilote'])) {
     $piloteId = $_POST['pilote_id'];
 
-    $stmt = $pdo->prepare("SELECT image_path FROM pilotes WHERE id = :id");
+    $stmt = $pdo->prepare("SELECT image_path FROM pilotes_emblematiques WHERE id = :id");
     $stmt->execute(['id' => $piloteId]);
     $pilote = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['supprimer_pilote'])) 
         unlink($pilote['image_path']);
     }
 
-    $stmt = $pdo->prepare("DELETE FROM pilotes WHERE id = :id");
+    $stmt = $pdo->prepare("DELETE FROM pilotes_emblematiques WHERE id = :id");
     $stmt->execute(['id' => $piloteId]);
 
     $message = "Pilote supprimé avec succès !";
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifier_pilote'])) {
     $palmares = $_POST['nouveau_palmares'];
     $ordre = $_POST['nouveau_ordre'];
 
-    $stmt = $pdo->prepare("UPDATE pilotes SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance, date_deces = :date_deces, nationalite = :nationalite, description = :description, palmares = :palmares, ordre = :ordre WHERE id = :id");
+    $stmt = $pdo->prepare("UPDATE pilotes_emblematiques SET nom = :nom, prenom = :prenom, date_naissance = :date_naissance, date_deces = :date_deces, nationalite = :nationalite, description = :description, palmares = :palmares, ordre = :ordre WHERE id = :id");
     $stmt->execute([
         'nom' => $nom,
         'prenom' => $prenom,
