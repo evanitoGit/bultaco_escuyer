@@ -4,15 +4,15 @@ $isRailway = getenv('MYSQLHOST') !== false;
 
 if ($isRailway) {
     // --- Configuration RAILWAY (En ligne) ---
-    $host = getenv('MYSQLHOST');
-    $dbname = getenv('MYSQLDATABASE');
-    $user = getenv('MYSQLUSER');
-    $pass = getenv('MYSQLPASSWORD');
-    $port = getenv('MYSQLPORT');
+    $host = getenv('mysql.railway.internal');
+    $dbname = getenv('railway');
+    $user = getenv('root');
+    $pass = getenv('xwiipZsXlxEyaOgZCKtPvQWESaYnEjRQ');
+    $port = getenv('3306');
 } else {
     // --- Configuration LOCALHOST (Ton PC) ---
     $host = 'localhost';
-    $dbname = 'ton_nom_de_bdd_local';
+    $dbname = 'club_bultaco';
     $user = 'root';
     $pass = ''; // Souvent vide sur XAMPP/WAMP
     $port = '3306';
